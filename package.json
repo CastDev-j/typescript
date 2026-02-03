@@ -1,0 +1,23 @@
+{
+  "name": "typescript-bun-starter",
+  "version": "1.0.0",
+  "description": "TypeScript starter project with Bun",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "bun test"
+  },
+  "keywords": [
+    "typescript",
+    "bun"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "latest"
+  }
+}
