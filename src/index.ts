@@ -1,12 +1,31 @@
-//pseudocode
+import "../global.css";
+import * as THREE from "three";
+import { WebGLRenderer } from "./webgl/renderer";
 
-// define an array a with values [1, 2, 3, 4]
-// define an array b as the reverse of array a
+const canvas = document.getElementById("webgl-canvas") as HTMLCanvasElement;
+if (!canvas) {
+  throw new Error("Canvas element not found");
+}
 
-// print both arrays a and b to the console
+const renderer = new WebGLRenderer(canvas);
 
-const a = Array.from({ length: 4 }).map((_, i) => i + 1);
+// Add a point at the center of the screen
+const points = Array.from({ length: 1000 }, () => {
+  const x = (Math.random() - 0.5) * 10;
+  const y = (Math.random() - 0.5) * 10;
+  const z = (Math.random() - 0.5) * 10;
 
-const b = a.reverse() || a.map((_, i) => a.length - i);
+  const color = new THREE.Color(Math.random(), Math.random(), Math.random());
+  const size = Math.random() * 20 + 5;
 
-console.log({ a, b });
+  const point = renderer.addPoint(x, y, z, color, size);
+  return point;
+});
+
+// Render the scene
+renderer.animate(() => {
+  points.forEach((point, index) => {
+    point.position.y = Math.sin(Date.now() * 0.001 + index) * 1.0;
+    point.position.x = Math.cos(Date.now() * 0.001 + index) * 1.0;
+  });
+});
