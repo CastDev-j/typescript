@@ -10,9 +10,9 @@ if (!canvas) {
 
 const renderer = new WebGLRenderer(canvas);
 
-const clocksAmount = 25;
+const clocksAmount = 50;
 
-for (let index = 0; index < clocksAmount; index++) {
+const clocks = Array.from({ length: clocksAmount }, (_, index) => {
   const clockRadius = 1.5;
   const color = new THREE.Color().setHSL(index / clocksAmount, 1, 0.5);
   const position = new THREE.Vector3(
@@ -20,8 +20,7 @@ for (let index = 0; index < clocksAmount; index++) {
     (Math.random() - 0.5) * 10,
     (Math.random() - 0.5) * 10,
   );
-
-  const clock = new Clock({
+  return new Clock({
     clockRadius,
     clockColor: color,
     hourHandColor: color,
@@ -29,9 +28,12 @@ for (let index = 0; index < clocksAmount; index++) {
     secondHandColor: color,
     position,
   });
+});
 
-  renderer.scene.add(clock.mesh);
-}
+const clocksCopy = clocks.map((clock) => {
+  const clockCopy = clock.getProperties();
+  return new Clock(clockCopy);
+});
 
 const centerClock = new Clock({
   clockRadius: 1,
@@ -44,4 +46,28 @@ const centerClock = new Clock({
 
 renderer.scene.add(centerClock.mesh);
 
-renderer.animate(() => {});
+clocks.forEach((clock) => {
+  renderer.scene.add(clock.mesh);
+});
+
+clocksCopy.forEach((clock) => {
+  renderer.scene.add(clock.mesh);
+});
+
+renderer.animate(() => {
+  const time = Date.now() * 0.0001;
+
+  clocks.forEach((clock, index) => {
+    const factor = index / clocksAmount;
+    clock.mesh.position.x = Math.cos(time + factor * Math.PI * 2) * 5;
+    clock.mesh.position.y = Math.sin(time + factor * Math.PI * 2) * 5;
+    clock.mesh.position.z = Math.sin(time + factor * Math.PI * 2) * 5;
+  });
+
+  clocksCopy.forEach((clock, index) => {
+    const factor = index / clocksAmount;
+    clock.mesh.position.x = -Math.cos(time + factor * Math.PI * 2) * 5;
+    clock.mesh.position.y = -Math.sin(time + factor * Math.PI * 2) * 5;
+    clock.mesh.position.z = Math.sin(time + factor * Math.PI * 2) * 5;
+  });
+});

@@ -13,8 +13,10 @@ export const generateCircle = ({
 }: GenerateCircleOptions) => {
   const vertices: number[] = [];
 
+  const factor = 360 / segments;
+
   for (let i = 0; i < segments; i++) {
-    const radians = i * (Math.PI / 180);
+    const radians = i * factor * (Math.PI / 180);
 
     const outterRadius = radius;
     const innerRadius = radius * 0.9;

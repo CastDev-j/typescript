@@ -35,6 +35,12 @@ export class Clock {
       segments: 360,
     });
 
+    const circleMarks = generateCircle({
+      color: this.clockColor,
+      radius: this.clockRadius * 0.9,
+      segments: 12,
+    });
+
     const { hourSegment, minuteSegment, secondSegment } = getTime();
 
     const hourLine = new RotativeLine(
@@ -55,7 +61,13 @@ export class Clock {
 
     this.mesh = new THREE.Group();
     this.mesh.position.copy(this.position);
-    this.mesh.add(circle, hourLine.mesh, minuteLine.mesh, secondLine.mesh);
+    this.mesh.add(
+      circle,
+      hourLine.mesh,
+      minuteLine.mesh,
+      secondLine.mesh,
+      circleMarks,
+    );
 
     setInterval(() => {
       const { hourSegment, minuteSegment, secondSegment } = getTime();
@@ -64,5 +76,16 @@ export class Clock {
       minuteLine.update(minuteSegment);
       secondLine.update(secondSegment);
     }, 1000);
+  }
+
+  getProperties() {
+    return {
+      clockRadius: this.clockRadius,
+      clockColor: this.clockColor,
+      hourHandColor: this.hourHandColor,
+      minuteHandColor: this.minuteHandColor,
+      secondHandColor: this.secondHandColor,
+      position: this.position,
+    };
   }
 }
