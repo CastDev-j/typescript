@@ -19,12 +19,14 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "latest",
+    "@types/stats.js": "^0.17.0",
     "typescript": "latest",
     "vite": "latest"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@types/three": "^0.182.0",
+    "stats.js": "^0.17.0",
     "tailwindcss": "^4.1.18",
     "three": "^0.182.0"
   }

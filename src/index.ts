@@ -2,6 +2,7 @@ import "../global.css";
 import { WebGLRenderer } from "./webgl/renderer";
 import { Clock } from "./lib/generate-clock";
 import * as THREE from "three";
+import Stats from "stats.js";
 
 const canvas = document.getElementById("webgl-canvas") as HTMLCanvasElement;
 if (!canvas) {
@@ -9,6 +10,14 @@ if (!canvas) {
 }
 
 const renderer = new WebGLRenderer(canvas);
+
+const stats = new Stats();
+stats.showPanel(0);
+stats.dom.style.position = "fixed";
+stats.dom.style.left = "0";
+stats.dom.style.top = "0";
+stats.dom.style.zIndex = "1000";
+document.body.appendChild(stats.dom);
 
 const clocksAmount = 50;
 
@@ -54,20 +63,26 @@ clocksCopy.forEach((clock) => {
   renderer.scene.add(clock.mesh);
 });
 
-renderer.animate(() => {
-  const time = Date.now() * 0.0001;
+renderer.animate(
+  () => {
+    stats.begin();
+    const time = Date.now() * 0.0001;
 
-  clocks.forEach((clock, index) => {
-    const factor = index / clocksAmount;
-    clock.mesh.position.x = Math.cos(time + factor * Math.PI * 2) * 5;
-    clock.mesh.position.y = Math.sin(time + factor * Math.PI * 2) * 5;
-    clock.mesh.position.z = Math.sin(time + factor * Math.PI * 2) * 5;
-  });
+    clocks.forEach((clock, index) => {
+      const factor = index / clocksAmount;
+      clock.mesh.position.x = Math.cos(time + factor * Math.PI * 2) * 5;
+      clock.mesh.position.y = Math.sin(time + factor * Math.PI * 2) * 5;
+      clock.mesh.position.z = Math.sin(time + factor * Math.PI * 2) * 5;
+    });
 
-  clocksCopy.forEach((clock, index) => {
-    const factor = index / clocksAmount;
-    clock.mesh.position.x = -Math.cos(time + factor * Math.PI * 2) * 5;
-    clock.mesh.position.y = -Math.sin(time + factor * Math.PI * 2) * 5;
-    clock.mesh.position.z = Math.sin(time + factor * Math.PI * 2) * 5;
-  });
-});
+    clocksCopy.forEach((clock, index) => {
+      const factor = index / clocksAmount;
+      clock.mesh.position.x = -Math.cos(time + factor * Math.PI * 2) * 5;
+      clock.mesh.position.y = -Math.sin(time + factor * Math.PI * 2) * 5;
+      clock.mesh.position.z = Math.sin(time + factor * Math.PI * 2) * 5;
+    });
+  },
+  () => {
+    stats.end();
+  },
+);

@@ -25,10 +25,13 @@ export class WebGLRenderer {
     this.renderer.render(this.scene, this.camera);
   }
 
-  animate(callback: () => void): void {
+  animate(callback: () => void, afterRender?: () => void): void {
     const loop = () => {
       callback();
       this.render();
+      if (afterRender) {
+        afterRender();
+      }
       requestAnimationFrame(loop);
     };
     loop();
