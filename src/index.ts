@@ -33,4 +33,15 @@ for (let index = 0; index < clocksAmount; index++) {
   renderer.scene.add(clock.mesh);
 }
 
+const centerClock = new Clock({
+  clockRadius: 1,
+  clockColor: "#ffffff",
+  hourHandColor: "#ffffff",
+  minuteHandColor: "#ffffff",
+  secondHandColor: "#ffffff",
+  position: new THREE.Vector3(0, 0, 0),
+});
+
+renderer.scene.add(centerClock.mesh);
+
 renderer.animate(() => {});
