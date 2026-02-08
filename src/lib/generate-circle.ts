@@ -16,8 +16,6 @@ export const generateCircle = ({
   for (let i = 0; i < segments; i++) {
     const radians = i * (Math.PI / 180);
 
-    console.log(radians);
-
     const outterRadius = radius;
     const innerRadius = radius * 0.9;
 

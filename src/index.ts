@@ -10,7 +10,7 @@ if (!canvas) {
 
 const renderer = new WebGLRenderer(canvas);
 
-const clocksAmount = 20;
+const clocksAmount = 25;
 
 for (let index = 0; index < clocksAmount; index++) {
   const clockRadius = 1.5;
