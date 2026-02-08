@@ -1,6 +1,7 @@
 import "../global.css";
-import * as THREE from "three";
 import { WebGLRenderer } from "./webgl/renderer";
+import { Clock } from "./lib/generate-clock";
+import * as THREE from "three";
 
 const canvas = document.getElementById("webgl-canvas") as HTMLCanvasElement;
 if (!canvas) {
@@ -9,23 +10,27 @@ if (!canvas) {
 
 const renderer = new WebGLRenderer(canvas);
 
-// Add a point at the center of the screen
-const points = Array.from({ length: 1000 }, () => {
-  const x = (Math.random() - 0.5) * 10;
-  const y = (Math.random() - 0.5) * 10;
-  const z = (Math.random() - 0.5) * 10;
+const clocksAmount = 20;
 
-  const color = new THREE.Color(Math.random(), Math.random(), Math.random());
-  const size = Math.random() * 20 + 5;
+for (let index = 0; index < clocksAmount; index++) {
+  const clockRadius = 1.5;
+  const color = new THREE.Color().setHSL(index / clocksAmount, 1, 0.5);
+  const position = new THREE.Vector3(
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 10,
+  );
 
-  const point = renderer.addPoint(x, y, z, color, size);
-  return point;
-});
-
-// Render the scene
-renderer.animate(() => {
-  points.forEach((point, index) => {
-    point.position.y = Math.sin(Date.now() * 0.001 + index) * 1.0;
-    point.position.x = Math.cos(Date.now() * 0.001 + index) * 1.0;
+  const clock = new Clock({
+    clockRadius,
+    clockColor: color,
+    hourHandColor: color,
+    minuteHandColor: color,
+    secondHandColor: color,
+    position,
   });
-});
+
+  renderer.scene.add(clock.mesh);
+}
+
+renderer.animate(() => {});
